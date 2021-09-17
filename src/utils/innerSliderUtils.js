@@ -35,19 +35,24 @@ export const getRequiredLazySlides = spec => {
 };
 
 // startIndex that needs to be present
-export const lazyStartIndex = spec =>
-  spec.currentSlide - lazySlidesOnLeft(spec);
-export const lazyEndIndex = spec => spec.currentSlide + lazySlidesOnRight(spec);
+export const lazyStartIndex = spec => {
+  const startIndex = spec.currentSlide - lazySlidesOnLeft(spec);
+  return (spec.lazyLoad === "anticipated") ? startIndex - 1 : startIndex
+};
+export const lazyEndIndex = spec => {
+  let endIndex = spec.currentSlide + lazySlidesOnRight(spec);
+  return (spec.lazyLoad === "anticipated") ? endIndex + 1 : endIndex
+};
 export const lazySlidesOnLeft = spec =>
   spec.centerMode
     ? Math.floor(spec.slidesToShow / 2) +
-      (parseInt(spec.centerPadding) > 0 ? 1 : 0)
+    (parseInt(spec.centerPadding) > 0 ? 1 : 0)
     : 0;
 export const lazySlidesOnRight = spec =>
   spec.centerMode
     ? Math.floor((spec.slidesToShow - 1) / 2) +
-      1 +
-      (parseInt(spec.centerPadding) > 0 ? 1 : 0)
+    1 +
+    (parseInt(spec.centerPadding) > 0 ? 1 : 0)
     : spec.slidesToShow;
 
 // get width of an element
